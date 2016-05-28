@@ -2,7 +2,7 @@
  * Created by serg on 26.05.2016.
  */
 
-var server = require('http').createServer().listen(3333, "192.168.33.12", function(){
+var server = require('http').createServer().listen(3333, "193.93.217.154", function(){
         console.log("SERVER IS UP");
     }),
     io = require('socket.io').listen(server);
