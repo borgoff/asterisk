@@ -19,7 +19,9 @@ io.on('connection', function(socket){
     var telnetsecret = socket.handshake.query.telnetsecret;
     var current_socket_id = socket.handshake.query.current_socket_id;
 
-    io.sockets.connected[current_socket_id].disconnect();
+    if(io.sockets.connected[current_socket_id]){
+        io.sockets.connected[current_socket_id].disconnect();
+    }
 
         var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
 
