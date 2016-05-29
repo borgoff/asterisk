@@ -20,7 +20,6 @@ io.on('connection', function(socket){
 
         if(!ami.isConnected()){
             socket.emit('error_asterisk_connect');
-            return false;
         }
 
         ami.keepConnected();
