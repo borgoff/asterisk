@@ -30,6 +30,17 @@ io.on('connection', function(socket){
 
         socket.emit('connected');
 
+        socket.on('change_options_reconnect',function(){            
+            socket.close();
+            ami.action({
+                'action':'logoff',
+                'actionid':'3333'
+            }, function(err, res) {
+
+            });
+            console.log(socket.id+'closed');
+        });
+
         socket.on('disconnect', function () {
             socket.emit('disconnected');
             ami.action({
