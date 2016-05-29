@@ -17,7 +17,8 @@ io.on('connection', function(socket){
 
         var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
 
-        if(!ami){
+
+        if(!ami.isConnected()){
             socket.emit('error_asterisk_connect');
             return false;
         }
@@ -40,7 +41,7 @@ io.on('connection', function(socket){
             });
             console.log('ami disconnected');
         });
-        
+
 });
 
 
