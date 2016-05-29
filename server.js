@@ -21,11 +21,9 @@ io.on('connection', function(socket){
         var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
 
 
-        setTimeout(function(){
-            if(!ami.isConnected()){
-                socket.emit('error_asterisk_connect');
-            }
-        }, 3000);
+        if(!ami.isConnected()){
+            socket.emit('error_asterisk_connect');
+        }
 
         ami.keepConnected();
 
