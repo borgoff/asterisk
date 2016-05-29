@@ -18,8 +18,7 @@ io.on('connection', function(socket){
     var telnetuser = socket.handshake.query.telnetuser;
     var telnetsecret = socket.handshake.query.telnetsecret;
     var current_socket_id = socket.handshake.query.current_socket_id;
-
-    console.log(current_socket_id+' <- current socket');
+    
     if(io.sockets.connected[current_socket_id]){
         io.sockets.connected[current_socket_id].disconnect();
         console.log(current_socket_id+' <- current socket disconnected');
@@ -27,20 +26,19 @@ io.on('connection', function(socket){
 
         var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
 
+        ami.keepConnected();
 
         if(!ami.isConnected()){
             socket.emit('error_asterisk_connect');
         }
 
-        ami.keepConnected();
-
         ami.on('agentcalled', function(evt) {
-            socket.emit('message',evt);
+            if (evt.agentname == agentnumber){
+                socket.emit('message',evt);
+            }
         });         
 
         socket.on('disconnect', function () {
-            console.log(socket.id+'disconnected');
-            socket.emit('disconnected');
             ami.action({
                 'action':'logoff',
                 'actionid':'3333'
