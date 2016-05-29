@@ -20,38 +20,42 @@ io.on('connection', function(socket){
 
         if(!ami.isConnected()){
             socket.emit('error_asterisk_connect');
-        }
-
-        ami.keepConnected();
-
-        ami.on('agentcalled', function(evt) {
-            socket.emit('message',evt);
-        });
-
-        socket.emit('connected');
-
-        socket.on('change_options_reconnect',function(){            
-            socket.close();
-            ami.action({
-                'action':'logoff',
-                'actionid':'3333'
-            }, function(err, res) {
-
-            });
+            socket.disconnect();
             console.log(socket.id+'closed');
-        });
-        console.log(socket.id+'connect');
+        } else {
 
-        socket.on('disconnect', function () {
-            socket.emit('disconnected');
-            ami.action({
-                'action':'logoff',
-                'actionid':'3333'
-            }, function(err, res) {
+            ami.keepConnected();
 
+            ami.on('agentcalled', function(evt) {
+                socket.emit('message',evt);
             });
-            console.log('ami disconnected');
-        });
+
+            socket.emit('connected');
+
+            socket.on('change_options_reconnect',function(){            
+                socket.disconnect();
+                ami.action({
+                    'action':'logoff',
+                    'actionid':'3333'
+                }, function(err, res) {
+                    console.log('ami disconnected');
+                });
+                console.log(socket.id+'closed');
+            });
+
+            console.log(socket.id+'connect');
+
+            socket.on('disconnect', function () {
+                socket.emit('disconnected');
+                ami.action({
+                    'action':'logoff',
+                    'actionid':'3333'
+                }, function(err, res) {
+                    console.log('ami disconnected');
+                });
+                
+            });
+        }
 
 });
 
