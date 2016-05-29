@@ -24,6 +24,10 @@ io.on('connection', function(socket){
         console.log(current_socket_id+' <- current socket disconnected');
     }
 
+    if(!agentnumber || !telnethost || !telnetport || !telnetuser || !telnetsecret){      
+        socket.emit('connect_error');
+    }
+
         var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
 
         ami.keepConnected();
