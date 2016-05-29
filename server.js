@@ -9,7 +9,7 @@ var server = require('http').createServer().listen(3333, "193.93.217.154", funct
 
 io.on('connection', function(socket){
 
-    socket.emit('connected');
+    socket.emit('connected',{current_socket_id:socket.id});
     console.log(socket.id+'connect');
 
     var agentnumber = socket.handshake.query.agentnumber;
@@ -17,6 +17,9 @@ io.on('connection', function(socket){
     var telnetport = socket.handshake.query.telnetport;
     var telnetuser = socket.handshake.query.telnetuser;
     var telnetsecret = socket.handshake.query.telnetsecret;
+    var current_socket_id = socket.handshake.query.current_socket_id;
+
+    io.sockets.connected[current_socket_id].disconnect();
 
         var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
 
