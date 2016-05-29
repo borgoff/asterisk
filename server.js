@@ -9,6 +9,9 @@ var server = require('http').createServer().listen(3333, "193.93.217.154", funct
 
 io.on('connection', function(socket){
 
+    socket.emit('connected');
+    console.log(socket.id+'connect');
+
     var agentnumber = socket.handshake.query.agentnumber;
     var telnethost = socket.handshake.query.telnethost;
     var telnetport = socket.handshake.query.telnetport;
@@ -20,42 +23,24 @@ io.on('connection', function(socket){
 
         if(!ami.isConnected()){
             socket.emit('error_asterisk_connect');
-            socket.disconnect();
-            console.log(socket.id+'closed');
-        } else {
-
-            ami.keepConnected();
-
-            ami.on('agentcalled', function(evt) {
-                socket.emit('message',evt);
-            });
-
-            socket.emit('connected');
-
-            socket.on('change_options_reconnect',function(){            
-                socket.disconnect();
-                ami.action({
-                    'action':'logoff',
-                    'actionid':'3333'
-                }, function(err, res) {
-                    console.log('ami disconnected');
-                });
-                console.log(socket.id+'closed');
-            });
-
-            console.log(socket.id+'connect');
-
-            socket.on('disconnect', function () {
-                socket.emit('disconnected');
-                ami.action({
-                    'action':'logoff',
-                    'actionid':'3333'
-                }, function(err, res) {
-                    console.log('ami disconnected');
-                });
-                
-            });
         }
+
+        ami.keepConnected();
+
+        ami.on('agentcalled', function(evt) {
+            socket.emit('message',evt);
+        });         
+
+        socket.on('disconnect', function () {
+            socket.emit('disconnected');
+            ami.action({
+                'action':'logoff',
+                'actionid':'3333'
+            }, function(err, res) {
+                console.log('ami disconnected');
+            });
+            
+        });
 
 });
 
