@@ -40,6 +40,7 @@ io.on('connection', function(socket){
             });
             console.log(socket.id+'closed');
         });
+        console.log(socket.id+'connect');
 
         socket.on('disconnect', function () {
             socket.emit('disconnected');
