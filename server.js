@@ -32,6 +32,14 @@ io.on('connection', function(socket){
             socket.emit('error_asterisk_connect');
         }
 
+        setInterval(function(){
+            if(!ami.isConnected()){
+                socket.emit('error_asterisk_connect');
+            } else {
+                socket.emit('connected',{current_socket_id:socket.id});
+            }         
+        }, 5000);
+
         ami.on('agentcalled', function(evt) {
             if (evt.agentname == agentnumber){
                 socket.emit('message',evt);
