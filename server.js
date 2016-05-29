@@ -9,35 +9,38 @@ var server = require('http').createServer().listen(3333, "193.93.217.154", funct
 
 io.on('connection', function(socket){
 
-    console.log(socket.id);
-
     var agentnumber = socket.handshake.query.agentnumber;
     var telnethost = socket.handshake.query.telnethost;
     var telnetport = socket.handshake.query.telnetport;
     var telnetuser = socket.handshake.query.telnetuser;
     var telnetsecret = socket.handshake.query.telnetsecret;
 
-    var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
+        var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
 
-    ami.keepConnected();
+        if(!ami){
+            socket.emit('error_asterisk_connect');
+            return false;
+        }
 
-    ami.on('agentcalled', function(evt) {
-        socket.emit('message',evt);
-    });
+        ami.keepConnected();
 
-    socket.emit('connected');
-
-    socket.on('disconnect', function () {
-        socket.emit('disconnected');
-        ami.action({
-            'action':'logoff',
-            'actionid':'3333'
-        }, function(err, res) {
-
+        ami.on('agentcalled', function(evt) {
+            socket.emit('message',evt);
         });
-        console.log('ami disconnected');
-    });
 
+        socket.emit('connected');
+
+        socket.on('disconnect', function () {
+            socket.emit('disconnected');
+            ami.action({
+                'action':'logoff',
+                'actionid':'3333'
+            }, function(err, res) {
+
+            });
+            console.log('ami disconnected');
+        });
+        
 });
 
 
