@@ -32,7 +32,7 @@ io.on('connection', function(socket){
     };
 
     var nami = new (require("nami").Nami)(namiConfig);
-    nami.on('namiEvent', function (event) {console.log('all events -------------------------------------------- ',event); });
+    nami.on('namiEvent', function (event) {console.log('all events -------------------------------------------- ',event.event); });
     nami.on('namiConnectionError', function (event) {
         console.log('Error - ',event.event);
     });
