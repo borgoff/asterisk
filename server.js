@@ -10,7 +10,7 @@ var server = require('http').createServer().listen(3333, "193.93.217.154", funct
 io.on('connection', function(socket){
 
     socket.emit('connected',{current_socket_id:socket.id});
-    console.log(socket.id+'connect');
+    console.log(socket.id+' - connected');
 
     var agentnumber = socket.handshake.query.agentnumber;
     var telnethost = socket.handshake.query.telnethost;
@@ -19,10 +19,6 @@ io.on('connection', function(socket){
     var telnetsecret = socket.handshake.query.telnetsecret;
     var current_socket_id = socket.handshake.query.current_socket_id;
     
-    if(io.sockets.connected[current_socket_id]){
-        io.sockets.connected[current_socket_id].disconnect();
-        console.log(current_socket_id+' <- current socket disconnected');
-    }
 
     if(!agentnumber || !telnethost || !telnetport || !telnetuser || !telnetsecret){      
         socket.emit('connect_error');
@@ -32,10 +28,12 @@ io.on('connection', function(socket){
 
         ami.keepConnected();
 
-        setInterval(function(){
+        console.log(ami);
+
+        /*setInterval(function(){
             var ami_status = ami.isConnected();
             socket.emit('error_asterisk_connect',{ami_status:ami_status});
-        }, 5000);
+        }, 5000);*/
 
         ami.on('agentcalled', function(evt) {
             if (evt.agentname == agentnumber){
@@ -44,6 +42,7 @@ io.on('connection', function(socket){
         });         
 
         socket.on('disconnect', function () {
+            socket.disconnect();
             ami.action({
                 'action':'logoff',
                 'actionid':'3333'
