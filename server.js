@@ -56,6 +56,7 @@ io.on('connection', function(socket){
         setInterval(function(){
             var ami_status = ami.isConnected();
             socket.emit('error_asterisk_connect',{ami_status:ami_status});
+            console.log(ami.login());
         }, 5000);
 
         ami.on('agentcalled', function(evt) {
