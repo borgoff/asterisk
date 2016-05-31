@@ -82,6 +82,7 @@ io.on('connection', function(socket){
     socket.on('disconnect_this', function () {
             socket.disconnect();
             connection.end();
+            ami.disconnect();
             /*ami.action({
                 'action':'logoff',
                 'actionid':'3333'
