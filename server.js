@@ -32,7 +32,7 @@ io.on('connection', function(socket){
     };
 
     var nami = new (require("nami").Nami)(namiConfig);
-    nami.on('namiEventAgentCalled', function (event) {console.log('all events -------------------------------------------- ',event); });
+    nami.on('namiEvent', function (event) {console.log('all events -------------------------------------------- ',event.Event); });
     nami.on('namiConnectionError', function (event) {
         console.log('Error - ',event);
     });
@@ -41,13 +41,13 @@ io.on('connection', function(socket){
     });
     nami.open();
 
-    var action = new namiLib.Actions.Events();
+    /*var action = new namiLib.Actions.Events();
     action.variables = {
         'EventMask': 'agent'
     };
     nami.send(action, function(response) {
         console.log(response);
-    });
+    });*/
 
     /*var mysql      = require('mysql'),
         connection = mysql.createConnection({
