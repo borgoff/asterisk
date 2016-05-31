@@ -23,6 +23,17 @@ io.on('connection', function(socket){
     if(!agentnumber || !telnethost || !telnetport || !telnetuser || !telnetsecret){      
         socket.emit('connect_error');
     }
+
+    var mysql      = require('mysql'),
+        connection = mysql.createConnection({
+            host     : '193.93.216.11',
+            user     : 'callc',
+            password : 'sqlpassword',
+            database : 'abills',
+            port     : 3306
+        });
+    connection.connect();
+
     var namiConfig = {
         host: telnethost,
         port: telnetport,
@@ -32,7 +43,27 @@ io.on('connection', function(socket){
     };
 
     var nami = new (require("nami").Nami)(namiConfig);
-    nami.on('namiEvent', function (event) {console.log('all events -------------------------------------------- ',event.event); });
+    nami.on('namiEventAgentCalled', function (event) {
+        if (event.agentname == agentnumber){
+        var phone = event.calleridnum;
+            phone.slice( -9 );
+            connection.query('SELECT uid'+
+                'FROM users_pi'+
+                ' WHERE (phone like "%'+phone+'%")'+
+                ' or (_phone_home like "%'+phone+'%")'+
+                ' or (_phone_second like "%'+phone+'%")'+
+                ' ORDER BY uid DESC',
+                function(err, results){
+                    if (results){
+                        console.log(results);
+                    }
+                    if (err){
+                        console.log(err);
+                    }
+                });
+            socket.emit('message',event);
+        }
+    });
     nami.on('namiConnectionError', function (event) {
         console.log('Error - ',event.event);
     });
@@ -49,15 +80,7 @@ io.on('connection', function(socket){
         console.log(response);
     });*/
 
-    /*var mysql      = require('mysql'),
-        connection = mysql.createConnection({
-            host     : '193.93.216.11',
-            user     : 'callc',
-            password : 'sqlpassword',
-            database : 'abills',
-            port     : 3306
-        });
-    connection.connect();
+    /*
 
     var phone = '673820246';
     connection.query('SELECT uid'+
