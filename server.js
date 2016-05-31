@@ -54,7 +54,13 @@ io.on('connection', function(socket){
         ami.keepConnected();
 
         setInterval(function(){
-            var ami_status = ami.isConnected();
+            ami.action({
+                'action': 'login',
+                'username': telnetuser,
+                'secret': telnetsecret
+            }, function(err, res) {
+                console.log('ami login',err, res);
+            });
             socket.emit('error_asterisk_connect',{ami_status:ami_status});
             console.log(ami.login());
         }, 5000);
@@ -78,9 +84,7 @@ io.on('connection', function(socket){
                 socket.emit('message',evt);
             }
         });
-        ami.on('fullybooted', function(evt) {
-            console.log(evt);
-        });
+
 
 
     socket.on('disconnect_this', function () {
