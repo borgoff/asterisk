@@ -24,7 +24,7 @@ io.on('connection', function(socket){
         socket.emit('connect_error');
     }
 
-    var mysql      = require('mysql'),
+    /*var mysql      = require('mysql'),
         connection = mysql.createConnection({
             host     : '193.93.216.11',
             user     : 'callc',
@@ -47,7 +47,7 @@ io.on('connection', function(socket){
             } else {
                 console.log(err);
             }
-        });
+        });*/
 
         var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
 
@@ -62,7 +62,6 @@ io.on('connection', function(socket){
                 console.log('ami login',err, res);
             });
             //socket.emit('error_asterisk_connect',{ami_status:ami_status});
-            console.log(ami.login());
         }, 5000);
 
         ami.on('agentcalled', function(evt) {
