@@ -27,7 +27,7 @@ io.on('connection', function(socket){
         host: telnethost,
         port: telnetport,
         username: telnetuser,
-        secret: telnetuser
+        secret: telnetsecret
     };
 
     var nami = new (require("nami").Nami)(namiConfig);
