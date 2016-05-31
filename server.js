@@ -41,6 +41,14 @@ io.on('connection', function(socket){
     });
     nami.open();
 
+    var action = new namiLib.Actions.Events();
+    action.variables = {
+        'EventMask': 'agent'
+    };
+    nami.send(action, function(response) {
+        console.log(response);
+    });
+
     /*var mysql      = require('mysql'),
         connection = mysql.createConnection({
             host     : '193.93.216.11',
