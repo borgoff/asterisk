@@ -23,6 +23,19 @@ io.on('connection', function(socket){
     if(!agentnumber || !telnethost || !telnetport || !telnetuser || !telnetsecret){      
         socket.emit('connect_error');
     }
+    var namiConfig = {
+        host: telnethost,
+        port: telnetport,
+        username: telnetuser,
+        secret: telnetuser
+    };
+
+    var nami = new (require("nami").Nami)(namiConfig);
+    nami.on('namiEvent', function (event) {console.log('all events - ',event); });
+    nami.on('namiConnected', function (event) {
+        console.log('connected - ',event);
+    });
+    nami.open();
 
     /*var mysql      = require('mysql'),
         connection = mysql.createConnection({
@@ -49,12 +62,12 @@ io.on('connection', function(socket){
             }
         });*/
 
-        var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
+        //var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
 
         //ami.keepConnected();
-    console.log(ami);
+        //console.log(ami);
 
-        setInterval(function(){
+        /*setInterval(function(){
             ami.action({
                 'action': 'login',
                 'username': telnetuser,
@@ -67,7 +80,7 @@ io.on('connection', function(socket){
 
         ami.on('agentcalled', function(evt) {
             if (evt.agentname == agentnumber){
-                /*var phone = evt.calleridnum;
+                /!*var phone = evt.calleridnum;
                 phone.slice( -9 );
                 connection.query('SELECT uid'+
                                     'FROM users_pi'+
@@ -79,18 +92,19 @@ io.on('connection', function(socket){
                         if (results){
                             console.log(results);
                         }
-                    });*/
+                    });*!/
 
                 socket.emit('message',evt);
             }
-        });
+        });*/
 
 
 
     socket.on('disconnect_this', function () {
             socket.disconnect();
-            connection.end();
-            ami.disconnect();
+            nami.close();
+            //connection.end();
+            //ami.disconnect();
             /*ami.action({
                 'action':'logoff',
                 'actionid':'3333'
