@@ -32,12 +32,12 @@ io.on('connection', function(socket){
     };
 
     var nami = new (require("nami").Nami)(namiConfig);
-    ///nami.on('namiEvent', function (event) {console.log('all events - ',event); });
+    nami.on('namiEventAgentCalled', function (event) {console.log('all events -------------------------------------------- ',event); });
     nami.on('namiConnected', function (event) {
         console.log('connected - ',event);
     });
     nami.on('namiLoginIncorrect', function (event) {
-        console.log('INCORRECT ----------------------------------------------------------------------------------------------------------------------------------------------- - ',event);
+        console.log('INCORRECT',event);
     });
     nami.open();
 
