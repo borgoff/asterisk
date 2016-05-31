@@ -52,6 +52,7 @@ io.on('connection', function(socket){
         var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
 
         //ami.keepConnected();
+    console.log(ami);
 
         setInterval(function(){
             ami.action({
@@ -61,7 +62,6 @@ io.on('connection', function(socket){
             }, function(err, res) {
                 console.log('ami login',err, res);
             });
-            console.log(ami.connection);
             //socket.emit('error_asterisk_connect',{ami_status:ami_status});
         }, 5000);
 
