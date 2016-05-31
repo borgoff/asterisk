@@ -66,7 +66,7 @@ io.on('connection', function(socket){
 
         ami.on('agentcalled', function(evt) {
             if (evt.agentname == agentnumber){
-                var phone = evt.calleridnum;
+                /*var phone = evt.calleridnum;
                 phone.slice( -9 );
                 connection.query('SELECT uid'+
                                     'FROM users_pi'+
@@ -78,7 +78,7 @@ io.on('connection', function(socket){
                         if (results){
                             console.log(results);
                         }
-                    });
+                    });*/
 
                 socket.emit('message',evt);
             }
