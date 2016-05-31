@@ -61,7 +61,7 @@ io.on('connection', function(socket){
             }, function(err, res) {
                 console.log('ami login',err, res);
             });
-            socket.emit('error_asterisk_connect',{ami_status:ami_status});
+            //socket.emit('error_asterisk_connect',{ami_status:ami_status});
             console.log(ami.login());
         }, 5000);
 
