@@ -2,7 +2,7 @@
  * Created by serg on 26.05.2016.
  */
 
-var server = require('http').createServer().listen(3333, "193.93.217.154", function(){
+var server = require('http').createServer().listen(3333, "192.168.33.12", function(){
         console.log("SERVER IS UP");
     }),
     io = require('socket.io').listen(server);
@@ -24,31 +24,73 @@ io.on('connection', function(socket){
         socket.emit('connect_error');
     }
 
+    var mysql      = require('mysql'),
+        connection = mysql.createConnection({
+            host     : '193.93.216.11',
+            user     : 'callc',
+            password : 'sqlpassword',
+            database : 'abills',
+            port     : 3306
+        });
+    connection.connect();
+
+    var phone = '673820246';
+    connection.query('SELECT uid'+
+        'FROM users_pi'+
+        ' WHERE (phone like "%'+phone+'%")'+
+        ' or (_phone_home like "%'+phone+'%")'+
+        ' or (_phone_second like "%'+phone+'%")'+
+        ' ORDER BY uid DESC',
+        function(err, results){
+            if (results){
+                console.log(results);
+            } else {
+                console.log(err);
+            }
+        });
+
         var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
 
         ami.keepConnected();
 
-        console.log(ami);
-
-        /*setInterval(function(){
+        setInterval(function(){
             var ami_status = ami.isConnected();
             socket.emit('error_asterisk_connect',{ami_status:ami_status});
-        }, 5000);*/
+        }, 5000);
 
         ami.on('agentcalled', function(evt) {
             if (evt.agentname == agentnumber){
+                var phone = evt.calleridnum;
+                phone.slice( -9 );
+                connection.query('SELECT uid'+
+                                    'FROM users_pi'+
+                                    ' WHERE (phone like "%'+phone+'%")'+
+                                    ' or (_phone_home like "%'+phone+'%")'+
+                                    ' or (_phone_second like "%'+phone+'%")'+
+                                    ' ORDER BY uid DESC',
+                    function(err, results){
+                        if (results){
+                            console.log(results);
+                        }
+                    });
+
                 socket.emit('message',evt);
             }
-        });         
+        });
 
-        socket.on('disconnect', function () {
+
+    socket.on('disconnect_this', function () {
             socket.disconnect();
-            ami.action({
+            console.log(ami.disconnect());
+            /*ami.action({
                 'action':'logoff',
                 'actionid':'3333'
             }, function(err, res) {
-                console.log('ami disconnected');
-            });
+                console.log('ami disconnected',err, res);
+                socket.disconnect();
+            });*/
+
+
             
         });
 
