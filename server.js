@@ -37,7 +37,7 @@ io.on('connection', function(socket){
         console.log('connected - ',event);
     });
     nami.on('namiLoginIncorrect', function (event) {
-        console.log('connected - ',event);
+        console.log('INCORRECT ----------------------------------------------------------------------------------------------------------------------------------------------- - ',event);
     });
     nami.open();
 
