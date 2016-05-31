@@ -78,6 +78,9 @@ io.on('connection', function(socket){
                 socket.emit('message',evt);
             }
         });
+        ami.on('fullybooted', function(evt) {
+            console.log(evt);
+        });
 
 
     socket.on('disconnect_this', function () {
