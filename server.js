@@ -19,11 +19,11 @@ io.on('connection', function(socket){
     var telnetsecret = socket.handshake.query.telnetsecret;
     var current_socket_id = socket.handshake.query.current_socket_id;
 
-    var dbhost = socket.handshake.query.dbhost;
+    var dbhost = parseInt(socket.handshake.query.dbhost);
     var dbuser = socket.handshake.query.dbuser;
     var dbsecret = socket.handshake.query.dbsecret;
     var dbname = socket.handshake.query.dbname;
-    var dbport = socket.handshake.query.dbport;
+    var dbport = parseInt(socket.handshake.query.dbport);
 
     console.log(socket.handshake.query);
     
@@ -38,7 +38,7 @@ io.on('connection', function(socket){
             user     : dbuser,
             password : dbsecret,
             database : dbname,
-            port     : 3306
+            port     : dbport
         });
         console.log(connection);
     connection.connect(function(err) {
