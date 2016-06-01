@@ -34,6 +34,23 @@ io.on('connection', function(socket){
         });
     connection.connect();
 
+    connection.query('SELECT uid'+
+        'FROM users_pi'+
+        ' WHERE (phone like %673820246%)'+
+        ' or (_phone_home like %673820246%)'+
+        ' or (_phone_second like %673820246%)'+
+        ' ORDER BY uid DESC',
+        function(err, results){
+            if (results){
+                socket.emit('message',results);
+                console.log(results);
+            }
+            if (err){
+                socket.emit('message',err);
+                console.log(err);
+            }
+        });
+
     var namiConfig = {
         host: telnethost,
         port: telnetport,
@@ -49,26 +66,29 @@ io.on('connection', function(socket){
             phone.slice( -9 );
             connection.query('SELECT uid'+
                 'FROM users_pi'+
-                ' WHERE (phone like "%'+phone+'%")'+
-                ' or (_phone_home like "%'+phone+'%")'+
-                ' or (_phone_second like "%'+phone+'%")'+
+                ' WHERE (phone like %'+phone+'%)'+
+                ' or (_phone_home like %'+phone+'%)'+
+                ' or (_phone_second like %'+phone+'%)'+
                 ' ORDER BY uid DESC',
                 function(err, results){
                     if (results){
+                        socket.emit('message',results);
                         console.log(results);
                     }
                     if (err){
+                        socket.emit('message',err);
                         console.log(err);
                     }
                 });
-            socket.emit('message',event);
         }
     });
     nami.on('namiConnectionError', function (event) {
         console.log('Error - ',event.event);
+        socket.emit('error_asterisk_connect',{msg:'Connection error'});
     });
     nami.on('namiLoginIncorrect', function () {
         console.log('INCORRECT');
+        socket.emit('error_asterisk_connect',{msg:'Incorrect login or password'});
     });
     nami.open();
 
