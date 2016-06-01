@@ -38,7 +38,7 @@ io.on('connection', function(socket){
             database : dbname,
             port     : dbport
         });
-        
+
     connection.connect(function(err) {
       if (err) {
         socket.emit('error_connect',{msg:'Incorrect DB options'});
@@ -123,10 +123,10 @@ io.on('connection', function(socket){
     });
     nami.open();
 
-    socket.on('disconnect_this', function () {
-            socket.disconnect();
+    socket.on('disconnect_this', function () {            
             nami.close();
             connection.end();
+            socket.disconnect();
         });
 
 });
