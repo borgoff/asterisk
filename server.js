@@ -38,7 +38,7 @@ io.on('connection', function(socket){
             user     : dbuser,
             password : dbsecret,
             database : dbname,
-            port     : dbport
+            port     : 3306
         });
         console.log(connection);
     connection.connect(function(err) {
