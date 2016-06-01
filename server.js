@@ -24,6 +24,8 @@ io.on('connection', function(socket){
     var dbsecret = socket.handshake.query.dbsecret;
     var dbname = socket.handshake.query.dbname;
     var dbport = socket.handshake.query.dbport;
+
+    console.log(socket.handshake.query);
     
 
     if(!agentnumber || !telnethost || !telnetport || !telnetuser || !telnetsecret || !dbhost || !dbuser || !dbsecret){      
