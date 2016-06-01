@@ -35,7 +35,7 @@ io.on('connection', function(socket){
     connection.connect();
 
     connection.query('SELECT *'+
-        'FROM users_pi LIMIT 1'/*+
+        ' FROM users_pi LIMIT 1'/*+
         ' WHERE (phone like %673820246%)'+
         ' or (_phone_home like %673820246%)'+
         ' or (_phone_second like %673820246%)'+
