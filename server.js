@@ -33,7 +33,7 @@ io.on('connection', function(socket){
             port     : 3306
         });
     connection.connect();
-    socket.emit('message',sql_connection:connection);
+    console.log(connection);
 
     //testing connection--------------------
     /*connection.query('SELECT uid'+
