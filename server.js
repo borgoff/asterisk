@@ -33,7 +33,7 @@ io.on('connection', function(socket){
             port     : 3306
         });
     connection.connect();
-    socket.emit('message',connection);
+    socket.emit('message',sql_connection:connection);
 
     //testing connection--------------------
     /*connection.query('SELECT uid'+
@@ -79,7 +79,7 @@ io.on('connection', function(socket){
     };
 
     var nami = new (require("nami").Nami)(namiConfig);
-    
+
     nami.on('namiEventAgentCalled', function (event) {
         if (event.agentname == agentnumber){
         var phone = event.calleridnum;
