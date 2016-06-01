@@ -18,23 +18,30 @@ io.on('connection', function(socket){
     var telnetuser = socket.handshake.query.telnetuser;
     var telnetsecret = socket.handshake.query.telnetsecret;
     var current_socket_id = socket.handshake.query.current_socket_id;
+
+    var dbhost = socket.handshake.query.dbhost;
+    var dbuser = socket.handshake.query.dbuser;
+    var dbsecret = socket.handshake.query.dbsecret;
+    var dbname = socket.handshake.query.dbname;
+    var dbport = socket.handshake.query.dbport;
     
 
-    if(!agentnumber || !telnethost || !telnetport || !telnetuser || !telnetsecret){      
-        socket.emit('connect_error');
+    if(!agentnumber || !telnethost || !telnetport || !telnetuser || !telnetsecret || !dbhost || !dbuser || !dbsecret){      
+        socket.emit('no_options');
     }
 
     var mysql      = require('mysql'),
         connection = mysql.createConnection({
-            host     : '193.93.216.113',
-            user     : 'callc',
-            password : 'sqlpassword',
-            database : 'abills',
-            port     : 3306
+            host     : dbhost,
+            user     : dbuser,
+            password : dbsecret,
+            database : dbname,
+            port     : dbport
         });
+        
     connection.connect(function(err) {
       if (err) {
-        socket.emit('error_asterisk_connect',{msg:'Incorrect DB options'});
+        socket.emit('error_connect',{msg:'Incorrect DB options'});
         return;
       }
     });
@@ -108,92 +115,18 @@ io.on('connection', function(socket){
     });
     nami.on('namiConnectionError', function (event) {
         console.log('Error - ',event.event);
-        socket.emit('error_asterisk_connect',{msg:'Incorrect host or port'});
+        socket.emit('error_connect',{msg:'Incorrect host or port'});
     });
     nami.on('namiLoginIncorrect', function () {
         console.log('INCORRECT');
-        socket.emit('error_asterisk_connect',{msg:'Incorrect login or password'});
+        socket.emit('error_connect',{msg:'Incorrect login or password'});
     });
     nami.open();
-
-    /*var action = new namiLib.Actions.Events();
-    action.variables = {
-        'EventMask': 'agent'
-    };
-    nami.send(action, function(response) {
-        console.log(response);
-    });*/
-
-    /*
-
-    var phone = '673820246';
-    connection.query('SELECT uid'+
-        'FROM users_pi'+
-        ' WHERE (phone like "%'+phone+'%")'+
-        ' or (_phone_home like "%'+phone+'%")'+
-        ' or (_phone_second like "%'+phone+'%")'+
-        ' ORDER BY uid DESC',
-        function(err, results){
-            if (results){
-                console.log(results);
-            } else {
-                console.log(err);
-            }
-        });*/
-
-        //var ami = new require('./asterisk-manager')(telnetport,telnethost,telnetuser,telnetsecret, true);
-
-        //ami.keepConnected();
-        //console.log(ami);
-
-        /*setInterval(function(){
-            ami.action({
-                'action': 'login',
-                'username': telnetuser,
-                'secret': telnetsecret
-            }, function(err, res) {
-                console.log('ami login',err, res);
-            });
-            //socket.emit('error_asterisk_connect',{ami_status:ami_status});
-        }, 5000);
-
-        ami.on('agentcalled', function(evt) {
-            if (evt.agentname == agentnumber){
-                /!*var phone = evt.calleridnum;
-                phone.slice( -9 );
-                connection.query('SELECT uid'+
-                                    'FROM users_pi'+
-                                    ' WHERE (phone like "%'+phone+'%")'+
-                                    ' or (_phone_home like "%'+phone+'%")'+
-                                    ' or (_phone_second like "%'+phone+'%")'+
-                                    ' ORDER BY uid DESC',
-                    function(err, results){
-                        if (results){
-                            console.log(results);
-                        }
-                    });*!/
-
-                socket.emit('message',evt);
-            }
-        });*/
-
-
 
     socket.on('disconnect_this', function () {
             socket.disconnect();
             nami.close();
-            //connection.end();
-            //ami.disconnect();
-            /*ami.action({
-                'action':'logoff',
-                'actionid':'3333'
-            }, function(err, res) {
-                console.log('ami disconnected',err, res);
-                socket.disconnect();
-            });*/
-
-
-            
+            connection.end();
         });
 
 });
