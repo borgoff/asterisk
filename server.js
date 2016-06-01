@@ -34,12 +34,12 @@ io.on('connection', function(socket){
         });
     connection.connect();
 
-    connection.query('SELECT uid'+
-        'FROM users_pi'+
+    connection.query('SELECT *'+
+        'FROM users_pi LIMIT 1'/*+
         ' WHERE (phone like %673820246%)'+
         ' or (_phone_home like %673820246%)'+
         ' or (_phone_second like %673820246%)'+
-        ' ORDER BY uid DESC',
+        ' ORDER BY uid DESC'*/,
         function(err, results){
             if (results){
                 socket.emit('message',results);
