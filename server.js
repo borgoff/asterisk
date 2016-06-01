@@ -36,9 +36,9 @@ io.on('connection', function(socket){
 
     connection.query('SELECT uid'+
         ' FROM users_pi'+
-        ' WHERE (phone like %673820246%)'+
-        ' or (_phone_home like %673820246%)'+
-        ' or (_phone_second like %673820246%)'+
+        ' WHERE (phone LIKE "%673820246%")'+
+        ' or (_phone_home LIKE "%673820246%")'+
+        ' or (_phone_second LIKE "%673820246%")'+
         ' ORDER BY uid DESC',
         function(err, results){
             if (results){
