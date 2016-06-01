@@ -19,7 +19,7 @@ io.on('connection', function(socket){
     var telnetsecret = socket.handshake.query.telnetsecret;
     var current_socket_id = socket.handshake.query.current_socket_id;
 
-    var dbhost = parseInt(socket.handshake.query.dbhost);
+    var dbhost = socket.handshake.query.dbhost;
     var dbuser = socket.handshake.query.dbuser;
     var dbsecret = socket.handshake.query.dbsecret;
     var dbname = socket.handshake.query.dbname;
