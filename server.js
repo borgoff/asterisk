@@ -26,14 +26,18 @@ io.on('connection', function(socket){
 
     var mysql      = require('mysql'),
         connection = mysql.createConnection({
-            host     : '193.93.216.11',
+            host     : '193.93.216.113',
             user     : 'callc',
             password : 'sqlpassword',
             database : 'abills',
             port     : 3306
         });
-    connection.connect();
-    console.log(connection);
+    connection.connect(function(err) {
+      if (err) {
+        socket.emit('error_asterisk_connect',{msg:'Incorrect DB options'});
+        return;
+      }
+    });
 
     //testing connection--------------------
     /*connection.query('SELECT uid'+
