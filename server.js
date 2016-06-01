@@ -34,12 +34,13 @@ io.on('connection', function(socket){
         });
     connection.connect();
 
+    //testing connection
     connection.query('SELECT uid'+
         ' FROM users_pi'+
         ' WHERE (phone LIKE "%673820246%")'+
         ' or (_phone_home LIKE "%673820246%")'+
         ' or (_phone_second LIKE "%673820246%")'+
-        ' ORDER BY uid DESC',
+        ' ORDER BY uid DESC LIMIT 1',
         function(err, results){
             if (results){
                 socket.emit('message',results);
@@ -65,11 +66,11 @@ io.on('connection', function(socket){
         var phone = event.calleridnum;
             phone.slice( -9 );
             connection.query('SELECT uid'+
-                'FROM users_pi'+
-                ' WHERE (phone like %'+phone+'%)'+
-                ' or (_phone_home like %'+phone+'%)'+
-                ' or (_phone_second like %'+phone+'%)'+
-                ' ORDER BY uid DESC',
+                ' FROM users_pi'+
+                ' WHERE (phone like "%'+phone+'%")'+
+                ' or (_phone_home like "%'+phone+'%")'+
+                ' or (_phone_second like "%'+phone+'%")'+
+                ' ORDER BY uid DESC LIMIT 1',
                 function(err, results){
                     if (results){
                         socket.emit('message',results);
