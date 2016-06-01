@@ -28,6 +28,7 @@ io.on('connection', function(socket){
 
     if(!agentnumber || !telnethost || !telnetport || !telnetuser || !telnetsecret || !dbhost || !dbuser || !dbsecret){      
         socket.emit('no_options');
+        socket_io.emit('disconnect_this');
     }
 
     var mysql      = require('mysql'),
@@ -42,6 +43,7 @@ io.on('connection', function(socket){
     connection.connect(function(err) {
       if (err) {
         socket.emit('error_connect',{msg:'Incorrect DB options'});
+        socket_io.emit('disconnect_this');
         return;
       }
     });
@@ -114,12 +116,12 @@ io.on('connection', function(socket){
         }
     });
     nami.on('namiConnectionError', function (event) {
-        console.log('Error - ',event.event);
         socket.emit('error_connect',{msg:'Incorrect host or port'});
+        socket_io.emit('disconnect_this');
     });
     nami.on('namiLoginIncorrect', function () {
-        console.log('INCORRECT');
         socket.emit('error_connect',{msg:'Incorrect login or password'});
+        socket_io.emit('disconnect_this');
     });
     nami.open();
 
