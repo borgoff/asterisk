@@ -33,9 +33,10 @@ io.on('connection', function(socket){
             port     : 3306
         });
     connection.connect();
+    socket.emit('message',connection);
 
-    //testing connection
-    connection.query('SELECT uid'+
+    //testing connection--------------------
+    /*connection.query('SELECT uid'+
         ' FROM users_pi'+
         ' WHERE (phone LIKE "%673820246%")'+
         ' or (_phone_home LIKE "%673820246%")'+
@@ -66,7 +67,8 @@ io.on('connection', function(socket){
             if (err){
                 socket.emit('message',err);
             }
-        });
+        });*/
+    //---------testing connection
 
     var namiConfig = {
         host: telnethost,
@@ -77,6 +79,7 @@ io.on('connection', function(socket){
     };
 
     var nami = new (require("nami").Nami)(namiConfig);
+    
     nami.on('namiEventAgentCalled', function (event) {
         if (event.agentname == agentnumber){
         var phone = event.calleridnum;
@@ -101,7 +104,7 @@ io.on('connection', function(socket){
     });
     nami.on('namiConnectionError', function (event) {
         console.log('Error - ',event.event);
-        socket.emit('error_asterisk_connect',{msg:'Connection error'});
+        socket.emit('error_asterisk_connect',{msg:'Incorrect host or port'});
     });
     nami.on('namiLoginIncorrect', function () {
         console.log('INCORRECT');
