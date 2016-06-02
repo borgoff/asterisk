@@ -104,22 +104,26 @@ io.on('connection', function(socket){
 
     nami.on('namiEventAgentConnect', function (event) {
         socket.emit('message',event);
+        socket.emit('message',{calling_queue_before_connect:calling_queue});
         var ar_index = calling_queue.indexOf(event.uniqueid);
         if(ar_index != -1){
             calling_queue = calling_queue.splice(ar_index,1);
         }
+        socket.emit('message',{calling_queue_after_connect:calling_queue});
     });
 
     nami.on('namiEventAgentDump', function (event) {
-        socket.emit('message',event);
+        socket.emit('message',{calling_queue_before_dump:calling_queue});
         var ar_index = calling_queue.indexOf(event.uniqueid);
         if(ar_index != -1){
             calling_queue = calling_queue.splice(ar_index,1);
         }
+        socket.emit('message',{calling_queue_after_dump:calling_queue});
     });
 
     nami.on('namiEventAgentCalled', function (event) {
         socket.emit('message',event);
+        socket.emit('message',{calling_queue:calling_queue});
         if (event.agentname == agentnumber){
             if(calling_queue.indexOf(event.calleridnum) == -1){
                 calling_queue.push(event.uniqueid);
