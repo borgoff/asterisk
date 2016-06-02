@@ -24,8 +24,6 @@ io.on('connection', function(socket){
     var dbsecret = socket.handshake.query.dbsecret;
     var dbname = socket.handshake.query.dbname;
     var dbport = parseInt(socket.handshake.query.dbport);
-
-    console.log(socket.handshake.query);
     
 
     if(!agentnumber || !telnethost || !telnetport || !telnetuser || !telnetsecret || !dbhost || !dbuser || !dbsecret || !dbname || !dbport){      
@@ -40,7 +38,6 @@ io.on('connection', function(socket){
             database : dbname,
             port     : dbport
         });
-        console.log(connection);
     connection.connect(function(err) {
       if (err) {
         socket.emit('error_connect',{msg:'Incorrect DB options'});
