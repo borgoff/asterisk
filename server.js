@@ -54,7 +54,7 @@ io.on('connection', function(socket){
         ' ORDER BY uid DESC LIMIT 1',
         function(err, results){
             if (results){
-                //socket.emit('message',results);
+                socket.emit('message',results);
                 /*connection.query('SELECT users.id, users_pi.fio, bills.deposit, users.credit, tarif_plans.name, groups.name, districts.name, streets.name, builds.number, users_pi.address_flat'+
                 ' FROM (users'+
                 ' left join users_pi on users.uid = users_pi.uid'+
