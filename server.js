@@ -56,7 +56,7 @@ io.on('connection', function(socket){
             if (results){
                 console.log(results[0].uid);
                 //socket.emit('message',results);
-                connection.query('SELECT users.id, users_pi.fio, bills.deposit, users.credit, tarif_plans.name, groups.name, districts.name, streets.name, builds.number, users_pi.address_flat'+
+                connection.query('SELECT users.id as user_id, users_pi.fio as user_fio, bills.deposit as user_deposit, users.credit as user_credit, tarif_plans.name as user_plan_name, groups.name as user_group_name, districts.name as user_district_name, streets.name as user_street_name, builds.number as user_bild_number, users_pi.address_flat as user_flat_number'+
                 ' FROM (users'+
                 ' left join users_pi on users.uid = users_pi.uid'+
                 ' left join bills on users.uid = bills.uid'+
