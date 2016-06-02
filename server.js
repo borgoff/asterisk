@@ -49,13 +49,16 @@ io.on('connection', function(socket){
     });
 
     //testing connection--------------------
-    connection.query('SELECT *'+
-        ' FROM districts'+
-        ' LIMIT 1',
+    connection.query('SELECT uid'+
+        ' FROM users_pi'+
+        ' WHERE (phone LIKE "%673820246%")'+
+        ' or (_phone_home LIKE "%673820246%")'+
+        ' or (_phone_second LIKE "%673820246%")'+
+        ' ORDER BY uid DESC LIMIT 1',
         function(err, results){
             if (results){
-                socket.emit('message',results);
-                /*connection.query('SELECT users.id, users_pi.fio, bills.deposit, users.credit, tarif_plans.name, groups.name, districts.name, streets.name, builds.number, users_pi.address_flat'+
+                //socket.emit('message',results);
+                connection.query('SELECT users.id, users_pi.fio, bills.deposit, users.credit, tarif_plans.name, groups.name, districts.name, streets.name, builds.number, users_pi.address_flat'+
                 ' FROM (users'+
                 ' left join users_pi on users.uid = users_pi.uid'+
                 ' left join bills on users.uid = bills.uid'+
@@ -67,13 +70,14 @@ io.on('connection', function(socket){
                 ' left join districts on streets.district_id = districts.id'+
                 ' WHERE users.uid = '+results.uid,
                     function(err2, results2){
+                        console.log(err2, results2);
                         if (results2){
                             socket.emit('message',results2);
                         }
                         if (err2){
                             socket.emit('message',err2);
                         }
-                    });*/
+                    });
             }
             if (err){
                 socket.emit('message',err);
