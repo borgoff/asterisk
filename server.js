@@ -97,6 +97,7 @@ io.on('connection', function(socket){
         if (event.agentname == agentnumber){
         var phone = event.calleridnum;
             phone.slice( -9 );
+            socket.emit('message',{phone:phone});
             connection.query('SELECT uid'+
                 ' FROM users_pi'+
                 ' WHERE (phone like "%'+phone+'%")'+
