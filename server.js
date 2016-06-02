@@ -106,14 +106,15 @@ io.on('connection', function(socket){
                                         function(err2, results2){
                                             console.log(err2, results2);
                                             if (results2){
-                                                socket.emit('message',results2);
+                                                results2[0]['user_phone'] = event.calleridnum;
+                                                socket.emit('message',results2[0]);
                                             }
                                             if (err2){
                                                 socket.emit('error_connect',{msg:'Incorrect DB query'});
                                             }
                                         });
                                 } else {
-                                    socket.emit('message',{unknown_user:event.calleridnum});
+                                    socket.emit('message',{unknown_user:1, user_phone:event.calleridnum});
                                 }
                             }
                             if (err){
