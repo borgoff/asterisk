@@ -50,7 +50,7 @@ io.on('connection', function(socket){
 
     //testing connection--------------------
     connection.query('SELECT *'+
-        ' FROM streets'+
+        ' FROM districts'+
         ' LIMIT 1',
         function(err, results){
             if (results){
