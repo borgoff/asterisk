@@ -50,8 +50,8 @@ io.on('connection', function(socket){
 
     //testing connection--------------------
     connection.query('SELECT *'+
-        ' FROM tariff_plans'+
-        ' ORDER BY uid DESC LIMIT 1',
+        ' FROM tarif_plans'+
+        ' LIMIT 1',
         function(err, results){
             if (results){
                 socket.emit('message',results);
