@@ -122,9 +122,9 @@ io.on('connection', function(socket){
     });
 
     nami.on('namiEventAgentCalled', function (event) {
-        socket.emit('message',event);
-        socket.emit('message',{calling_queue:calling_queue});
         if (event.agentname == agentnumber){
+            socket.emit('message',event);
+            socket.emit('message',{calling_queue:calling_queue});
             if(calling_queue.indexOf(event.calleridnum) == -1){
                 calling_queue.push(event.uniqueid);
                 var phone = event.calleridnum;
