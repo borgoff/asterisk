@@ -49,11 +49,8 @@ io.on('connection', function(socket){
     });
 
     //testing connection--------------------
-    connection.query('SELECT uid'+
-        ' FROM users_pi'+
-        ' WHERE (phone LIKE "%673820246%")'+
-        ' or (_phone_home LIKE "%673820246%")'+
-        ' or (_phone_second LIKE "%673820246%")'+
+    connection.query('SELECT *'+
+        ' FROM users'+
         ' ORDER BY uid DESC LIMIT 1',
         function(err, results){
             if (results){
@@ -77,17 +74,6 @@ io.on('connection', function(socket){
                             socket.emit('message',err2);
                         }
                     });*/
-                connection.query('SELECT *'+
-                    ' FROM users_pi'+
-                    ' LIMIT 1',
-                    function(err2, results2){
-                        if (results2){
-                            socket.emit('message',results2);
-                        }
-                        if (err2){
-                            socket.emit('message',err2);
-                        }
-                    });
             }
             if (err){
                 socket.emit('message',err);
