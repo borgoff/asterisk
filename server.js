@@ -105,7 +105,7 @@ io.on('connection', function(socket){
 
     var nami = new (require("nami").Nami)(namiConfig);
 
-    nami.on('namiEventAgentCalled', function (event) {
+    /*nami.on('namiEventAgentCalled', function (event) {
         if (event.agentname == agentnumber){
         var phone = event.calleridnum;
             phone.slice( -9 );
@@ -126,7 +126,7 @@ io.on('connection', function(socket){
                     }
                 });
         }
-    });
+    });*/
     nami.on('namiConnectionError', function (event) {
         socket.emit('error_connect',{msg:'Incorrect host or port'});
     });
