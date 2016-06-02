@@ -58,12 +58,12 @@ io.on('connection', function(socket){
         function(err, results){
             if (results){
                 //socket.emit('message',results);
-                connection.query('SELECT users.id, users_pi.fio, bills.deposit, users.credit, tarif_plans.name, groups.name, districts.name, streets.name, builds.number, users_pi.address_flat'+
+                connection.query('SELECT users.id, users_pi.fio, bills.deposit, users.credit, groups.name, districts.name, streets.name, builds.number, users_pi.address_flat'+
                 ' FROM (users'+
                 ' left join users_pi on users.uid = users_pi.uid'+
                 ' left join bills on users.uid = bills.uid'+
-                ' left join dv_main on dv_main.uid = users.uid )'+
-                ' left join tarif_plans on dv_main.tp_id = tarif_plans.id'+
+                //' left join dv_main on dv_main.uid = users.uid )'+
+                //' left join tarif_plans on dv_main.tp_id = tarif_plans.id'+
                 ' left join groups on users.gid = groups.gid'+
                 ' left join builds on users_pi.location_id = builds.id'+
                 ' left join streets on builds.street_id = streets.id'+
@@ -88,8 +88,7 @@ io.on('connection', function(socket){
         host: telnethost,
         port: telnetport,
         username: telnetuser,
-        secret: telnetsecret,
-        event:'off'
+        secret: telnetsecret
     };
 
     var nami = new (require("nami").Nami)(namiConfig);
