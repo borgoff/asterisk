@@ -95,6 +95,7 @@ io.on('connection', function(socket){
     var nami = new (require("nami").Nami)(namiConfig);
 
     nami.on('namiEventAgentRingNoAnswer', function (event) {
+        socket.emit('message',event);
         var ar_index = calling_queue.indexOf(event.uniqueid);
         if(ar_index != -1){
             calling_queue = calling_queue.splice(ar_index,1);
@@ -102,6 +103,7 @@ io.on('connection', function(socket){
     });
 
     nami.on('namiEventAgentConnect', function (event) {
+        socket.emit('message',event);
         var ar_index = calling_queue.indexOf(event.uniqueid);
         if(ar_index != -1){
             calling_queue = calling_queue.splice(ar_index,1);
@@ -109,6 +111,7 @@ io.on('connection', function(socket){
     });
 
     nami.on('namiEventAgentDump', function (event) {
+        socket.emit('message',event);
         var ar_index = calling_queue.indexOf(event.uniqueid);
         if(ar_index != -1){
             calling_queue = calling_queue.splice(ar_index,1);
@@ -116,6 +119,7 @@ io.on('connection', function(socket){
     });
 
     nami.on('namiEventAgentCalled', function (event) {
+        socket.emit('message',event);
         if (event.agentname == agentnumber){
             if(calling_queue.indexOf(event.calleridnum) == -1){
                 calling_queue.push(event.uniqueid);
