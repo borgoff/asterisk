@@ -78,7 +78,7 @@ io.on('connection', function(socket){
                         }
                     });*/
                 connection.query('SELECT *'+
-                    ' FROM users'+
+                    ' FROM users_pi'+
                     ' LIMIT 1',
                     function(err2, results2){
                         if (results2){
