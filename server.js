@@ -46,7 +46,7 @@ io.on('connection', function(socket){
     });
 
     //testing connection--------------------
-    connection.query('SELECT uid'+
+    /*connection.query('SELECT uid'+
         ' FROM users_pi'+
         ' WHERE (phone LIKE "%673820246%")'+
         ' or (_phone_home LIKE "%673820246%")'+
@@ -80,7 +80,7 @@ io.on('connection', function(socket){
             if (err){
                 socket.emit('message',err);
             }
-        });
+        });*/
     //---------testing connection
 
     var namiConfig = {
@@ -92,7 +92,7 @@ io.on('connection', function(socket){
 
     var nami = new (require("nami").Nami)(namiConfig);
 
-   /* nami.on('namiEventAgentCalled', function (event) {
+    nami.on('namiEventAgentCalled', function (event) {
         if (event.agentname == agentnumber){
         var phone = event.calleridnum;
             phone.slice( -9 );
@@ -104,16 +104,35 @@ io.on('connection', function(socket){
                 ' ORDER BY uid DESC LIMIT 1',
                 function(err, results){
                     if (results){
-                        socket.emit('message',results);
-                        console.log(results);
+                        console.log(results[0].uid);
+                        //socket.emit('message',results);
+                        connection.query('SELECT users.id as user_id, users_pi.fio as user_fio, bills.deposit as user_deposit, users.credit as user_credit, tarif_plans.name as user_plan_name, groups.name as user_group_name, districts.name as user_district_name, streets.name as user_street_name, builds.number as user_bild_number, users_pi.address_flat as user_flat_number'+
+                            ' FROM (users'+
+                            ' left join users_pi on users.uid = users_pi.uid'+
+                            ' left join bills on users.uid = bills.uid'+
+                            ' left join dv_main on dv_main.uid = users.uid )'+
+                            ' left join tarif_plans on dv_main.tp_id = tarif_plans.id'+
+                            ' left join groups on users.gid = groups.gid'+
+                            ' left join builds on users_pi.location_id = builds.id'+
+                            ' left join streets on builds.street_id = streets.id'+
+                            ' left join districts on streets.district_id = districts.id'+
+                            ' WHERE users.uid = '+results[0].uid,
+                            function(err2, results2){
+                                console.log(err2, results2);
+                                if (results2){
+                                    socket.emit('message',results2);
+                                }
+                                if (err2){
+                                    socket.emit('message',err2);
+                                }
+                            });
                     }
                     if (err){
                         socket.emit('message',err);
-                        console.log(err);
                     }
                 });
         }
-    });*/
+    });
     nami.on('namiConnectionError', function (event) {
         socket.emit('error_connect',{msg:'Incorrect host or port'});
     });
