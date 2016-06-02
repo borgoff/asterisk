@@ -94,13 +94,13 @@ io.on('connection', function(socket){
 
     var nami = new (require("nami").Nami)(namiConfig);
 
-    nami.on('namiEventAgentRingNoAnswer', function (event) {
+    /*nami.on('namiEventAgentRingNoAnswer', function (event) {
         socket.emit('message',event);
         var ar_index = calling_queue.indexOf(event.uniqueid);
         if(ar_index != -1){
             calling_queue = calling_queue.splice(ar_index,1);
         }
-    });
+    });*/
 
     nami.on('namiEventAgentConnect', function (event) {
         socket.emit('message',event);
