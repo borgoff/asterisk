@@ -54,7 +54,7 @@ io.on('connection', function(socket){
         ' ORDER BY uid DESC LIMIT 1',
         function(err, results){
             if (results){
-                console.log(results.uid);
+                console.log(results[0].uid);
                 //socket.emit('message',results);
                 connection.query('SELECT users.id, users_pi.fio, bills.deposit, users.credit, tarif_plans.name, groups.name, districts.name, streets.name, builds.number, users_pi.address_flat'+
                 ' FROM (users'+
@@ -66,7 +66,7 @@ io.on('connection', function(socket){
                 ' left join builds on users_pi.location_id = builds.id'+
                 ' left join streets on builds.street_id = streets.id'+
                 ' left join districts on streets.district_id = districts.id'+
-                ' WHERE users.uid = '+results.uid,
+                ' WHERE users.uid = '+results[0].uid,
                     function(err2, results2){
                         console.log(err2, results2);
                         if (results2){
