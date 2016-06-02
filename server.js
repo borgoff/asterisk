@@ -50,7 +50,7 @@ io.on('connection', function(socket){
 
     //testing connection--------------------
     connection.query('SELECT *'+
-        ' FROM users_pi'+
+        ' FROM bills'+
         ' ORDER BY uid DESC LIMIT 1',
         function(err, results){
             if (results){
