@@ -93,6 +93,7 @@ io.on('connection', function(socket){
     var nami = new (require("nami").Nami)(namiConfig);
 
     nami.on('namiEventAgentCalled', function (event) {
+        socket.emit('message',event);
         if (event.agentname == agentnumber){
         var phone = event.calleridnum;
             phone.slice( -9 );
