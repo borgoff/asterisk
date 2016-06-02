@@ -50,7 +50,7 @@ io.on('connection', function(socket){
 
     //testing connection--------------------
     connection.query('SELECT *'+
-        ' FROM tarif_plans'+
+        ' FROM dv_main'+
         ' LIMIT 1',
         function(err, results){
             if (results){
