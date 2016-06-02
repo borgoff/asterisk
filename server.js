@@ -12,14 +12,12 @@ io.on('connection', function(socket){
     var calling_queue = [];
 
     socket.emit('connected',{current_socket_id:socket.id});
-    console.log(socket.id+' - connected');
 
     var agentnumber = socket.handshake.query.agentnumber;
     var telnethost = socket.handshake.query.telnethost;
     var telnetport = socket.handshake.query.telnetport;
     var telnetuser = socket.handshake.query.telnetuser;
     var telnetsecret = socket.handshake.query.telnetsecret;
-    var current_socket_id = socket.handshake.query.current_socket_id;
 
     var dbhost = socket.handshake.query.dbhost;
     var dbuser = socket.handshake.query.dbuser;
