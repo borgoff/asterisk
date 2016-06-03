@@ -114,6 +114,7 @@ io.on('connection', function(socket){
                                             console.log(err2, results2);
                                             if (results2){
                                                 results2[0]['user_phone'] = phone;
+                                                results2[0]['user_uid'] = results[0].uid;
                                                 results2[0]['uniqueid'] = event.uniqueid;
                                                 socket.emit('message',results2[0]);
                                             }
