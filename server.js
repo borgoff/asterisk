@@ -89,7 +89,7 @@ io.on('connection', function(socket){
             if(calling_queue.indexOf(event.uniqueid) == -1){
                 calling_queue.push(event.uniqueid);
                 var phone = event.calleridnum;
-                    phone.slice( -9 );
+                    phone = phone.slice( -9 );
                     connection.query('SELECT uid'+
                         ' FROM users_pi'+
                         ' WHERE (phone like "%'+phone+'%")'+
