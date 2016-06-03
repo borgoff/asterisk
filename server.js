@@ -63,7 +63,6 @@ io.on('connection', function(socket){
     });*/
 
     nami.on('namiEventAgentConnect', function (event) {
-        socket.emit('message',{calling_queue_before_connect:calling_queue});
         var ar_index = calling_queue.indexOf(event.uniqueid);
         if(ar_index != -1){
             calling_queue = calling_queue.splice(ar_index,1);
