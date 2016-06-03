@@ -113,7 +113,7 @@ io.on('connection', function(socket){
                                         function(err2, results2){
                                             console.log(err2, results2);
                                             if (results2){
-                                                results2[0]['user_phone'] = event.calleridnum;
+                                                results2[0]['user_phone'] = phone;
                                                 results2[0]['uniqueid'] = event.uniqueid;
                                                 socket.emit('message',results2[0]);
                                             }
@@ -122,7 +122,7 @@ io.on('connection', function(socket){
                                             }
                                         });
                                 } else {
-                                    socket.emit('message',{unknown_user:1, user_phone:event.calleridnum, uniqueid:event.uniqueid});
+                                    socket.emit('message',{unknown_user:1, user_phone:phone, uniqueid:event.uniqueid});
                                 }
                             }
                             if (err){
