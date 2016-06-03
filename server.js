@@ -74,6 +74,7 @@ io.on('connection', function(socket){
         if(ar_index != -1){
             calling_queue = calling_queue.splice(ar_index,1);
         }
+        socket.emit('remove_message',{uniqueid:event.uniqueid});
     });
 
     nami.on('namiEventAgentCalled', function (event) {
@@ -106,6 +107,7 @@ io.on('connection', function(socket){
                                             console.log(err2, results2);
                                             if (results2){
                                                 results2[0]['user_phone'] = event.calleridnum;
+                                                results2[0]['uniqueid'] = event.uniqueid;
                                                 socket.emit('message',results2[0]);
                                             }
                                             if (err2){
@@ -113,7 +115,7 @@ io.on('connection', function(socket){
                                             }
                                         });
                                 } else {
-                                    socket.emit('message',{unknown_user:1, user_phone:event.calleridnum});
+                                    socket.emit('message',{unknown_user:1, user_phone:event.calleridnum, uniqueid:event.uniqueid});
                                 }
                             }
                             if (err){
