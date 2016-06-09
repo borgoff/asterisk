@@ -90,6 +90,13 @@ io.on('connection', function(socket){
         }
         socket.emit('remove_message',{uniqueid:event.uniqueid});
     });
+    nami.on('namiEventQueueCallerAbandon', function (event) {
+        var ar_index = calling_queue.indexOf(event.uniqueid);
+        if(ar_index != -1){
+            calling_queue = calling_queue.splice(ar_index,1);
+        }
+        socket.emit('remove_message',{uniqueid:event.uniqueid});
+    });
 
     nami.on('namiEventAgentCalled', function (event) {
         if (event.agentname == agentnumber){
